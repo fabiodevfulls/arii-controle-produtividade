@@ -1,6 +1,7 @@
 const COOKIE_NAME = "backoffice_session";
 const DEFAULT_EMAIL = "fabiodasilvaa82@gmail.com";
 const SESSION_SECONDS = 60 * 60 * 12;
+const PASSWORD_HASH_ITERATIONS = 100_000;
 
 type AuthEnv = { AUTH_EMAIL?: string; AUTH_PASSWORD?: string; SESSION_SECRET?: string; DB?: D1Database };
 type SessionPayload = { email: string; exp: number };
@@ -65,7 +66,7 @@ export async function authenticate(email: string, password: string) {
 
 export async function hashPassword(password: string, salt = crypto.getRandomValues(new Uint8Array(16))) {
   const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);
-  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: 120_000 }, key, 256);
+  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: PASSWORD_HASH_ITERATIONS }, key, 256);
   return { hash: base64url(new Uint8Array(bits)), salt: base64url(salt) };
 }
 
