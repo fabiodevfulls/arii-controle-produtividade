@@ -32,6 +32,7 @@ type RuntimeEnv = {
   SUPABASE_PUBLISHABLE_KEY?: string;
   RESEND_API_KEY?: string;
   EMAIL_FROM?: string;
+  REGISTRATION_TEST_EMAIL?: string;
 };
 
 async function getRuntimeEnv(): Promise<RuntimeEnv> {
@@ -59,6 +60,11 @@ export async function getEmailConfig() {
   const from = env.EMAIL_FROM ?? process.env.EMAIL_FROM;
   if (!apiKey || !from) throw new Error("Envio de e-mail ainda não configurado.");
   return { apiKey, from };
+}
+
+export async function getRegistrationTestEmail() {
+  const env = await getRuntimeEnv();
+  return (env.REGISTRATION_TEST_EMAIL ?? process.env.REGISTRATION_TEST_EMAIL ?? "").trim().toLowerCase();
 }
 
 export async function ensureSchema() {

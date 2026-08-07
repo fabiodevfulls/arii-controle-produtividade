@@ -1,5 +1,5 @@
 import { hashPassword } from "../../../lib/auth";
-import { apiError, ensureSchema, getDatabase, getEmailConfig } from "../../../lib/server";
+import { apiError, ensureSchema, getDatabase, getEmailConfig, getRegistrationTestEmail } from "../../../lib/server";
 
 export const dynamic = "force-dynamic";
 const ADMIN_EMAIL = "fabiodasilvaa82@gmail.com";
@@ -85,7 +85,8 @@ export async function POST(request: Request) {
     }
     if (!name || name.length < 3 || name.length > 120) return Response.json({ error: "Informe seu nome completo." }, { status: 400 });
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 160) return Response.json({ error: "Informe um e-mail válido." }, { status: 400 });
-    if (!email.endsWith(CORPORATE_DOMAIN)) return Response.json({ error: `Use somente o e-mail corporativo ${CORPORATE_DOMAIN}.` }, { status: 400 });
+    const testEmail = await getRegistrationTestEmail();
+    if (!email.endsWith(CORPORATE_DOMAIN) && email !== testEmail) return Response.json({ error: `Use somente o e-mail corporativo ${CORPORATE_DOMAIN}.` }, { status: 400 });
     if (!employeeCode || employeeCode.length < 2 || employeeCode.length > 40) return Response.json({ error: "Informe sua matrícula." }, { status: 400 });
     if (password.length < 8 || password.length > 128) return Response.json({ error: "A senha deve ter pelo menos 8 caracteres." }, { status: 400 });
     if (email === ADMIN_EMAIL) return Response.json({ error: "Esse e-mail pertence ao administrador." }, { status: 400 });
