@@ -11,7 +11,7 @@ async function authEnv() {
   const env = cloudflare.env as unknown as AuthEnv;
   const password = env.AUTH_PASSWORD ?? process.env.AUTH_PASSWORD;
   const secret = env.SESSION_SECRET ?? process.env.SESSION_SECRET;
-  if (!password || !secret) throw new Error("Login de producao ainda nao configurado.");
+  if (!secret) throw new Error("Sessão de login ainda não configurada.");
   return {
     AUTH_EMAIL: (env.AUTH_EMAIL ?? process.env.AUTH_EMAIL ?? DEFAULT_EMAIL).toLowerCase(),
     AUTH_PASSWORD: password,
@@ -50,11 +50,13 @@ async function secureEqual(left: string, right: string) {
 export async function authenticate(email: string, password: string) {
   const env = await authEnv();
   const normalizedEmail = email.trim().toLowerCase();
-  const [emailMatches, passwordMatches] = await Promise.all([
-    secureEqual(normalizedEmail, env.AUTH_EMAIL),
-    secureEqual(password, env.AUTH_PASSWORD),
-  ]);
-  if (emailMatches && passwordMatches) return normalizedEmail;
+  if (env.AUTH_PASSWORD) {
+    const [emailMatches, passwordMatches] = await Promise.all([
+      secureEqual(normalizedEmail, env.AUTH_EMAIL),
+      secureEqual(password, env.AUTH_PASSWORD),
+    ]);
+    if (emailMatches && passwordMatches) return normalizedEmail;
+  }
   if (!env.DB) return null;
   const user = await env.DB.prepare(`SELECT password_hash AS passwordHash, password_salt AS passwordSalt
     FROM users WHERE email = ? AND active = 1 AND registration_complete = 1`)
