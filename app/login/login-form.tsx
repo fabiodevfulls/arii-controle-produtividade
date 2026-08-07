@@ -9,7 +9,6 @@ export default function LoginForm() {
   const [mode, setMode] = useState<Mode>("login");
   const [status, setStatus] = useState("");
   const [saving, setSaving] = useState(false);
-  const [verificationEmail, setVerificationEmail] = useState("");
 
   async function register(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,27 +37,8 @@ export default function LoginForm() {
       setStatus(result.error ?? "Não foi possível criar o cadastro.");
       return;
     }
-    setVerificationEmail(String(form.get("email") ?? "").trim().toLowerCase());
-    setStatus(result.message ?? "Código enviado. Consulte sua caixa de entrada.");
-  }
-
-  async function confirmCode(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    setSaving(true);
-    setStatus("");
-    const response = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ action: "confirm-code", email: verificationEmail, code: form.get("code") }),
-    });
-    const result = await response.json() as { message?: string; error?: string };
-    setSaving(false);
-    setStatus(result.message ?? result.error ?? "Não foi possível validar o código.");
-    if (response.ok) {
-      setVerificationEmail("");
-      setMode("login");
-    }
+    setStatus(result.message ?? "Cadastro criado. Agora você pode entrar.");
+    setMode("login");
   }
 
   return (
@@ -79,16 +59,6 @@ export default function LoginForm() {
           <label>Senha<input name="password" type="password" autoComplete="current-password" required /></label>
           <button className={styles.primary} type="submit">Entrar</button>
         </form>
-      ) : verificationEmail ? (
-        <form className={styles.form} onSubmit={confirmCode}>
-          <div className={styles.emailNotice}>Código enviado para <strong>{verificationEmail}</strong></div>
-          <label>Código de validação
-            <input name="code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" minLength={6} maxLength={6} placeholder="000000" required autoFocus />
-          </label>
-          <small>O código vale por 10 minutos e pode ser tentado até 5 vezes.</small>
-          <button className={styles.primary} type="submit" disabled={saving}>{saving ? "Validando..." : "Validar e criar cadastro"}</button>
-          <button className={styles.secondary} type="button" onClick={() => { setVerificationEmail(""); setStatus(""); }}>Corrigir dados ou reenviar</button>
-        </form>
       ) : (
         <form className={styles.form} onSubmit={register}>
           <label>Nome completo<input name="name" minLength={3} maxLength={120} autoComplete="name" required /></label>
@@ -97,7 +67,8 @@ export default function LoginForm() {
           <label>Senha<input name="password" type="password" minLength={8} maxLength={128} autoComplete="new-password" required /></label>
           <label>Confirmar senha<input name="confirmPassword" type="password" minLength={8} maxLength={128} autoComplete="new-password" required /></label>
           <small>Permitido somente e-mail @equatorialservicos.com.br.</small>
-          <button className={styles.primary} type="submit" disabled={saving}>{saving ? "Enviando código..." : "Enviar código de validação"}</button>
+          <small>A validação por código de e-mail está temporariamente desativada.</small>
+          <button className={styles.primary} type="submit" disabled={saving}>{saving ? "Criando cadastro..." : "Criar meu cadastro"}</button>
         </form>
       )}
     </section>
