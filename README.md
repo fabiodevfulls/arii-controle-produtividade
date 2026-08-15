@@ -1,137 +1,190 @@
-# ARII - Controle Inteligente de Produtividade no Backoffice
+<div align="center">
 
-Plataforma digital para registrar protocolos e ligações, acompanhar a produtividade diária e oferecer rastreabilidade operacional para atendentes e supervisores.
+<img src="public/report-energy-banner.png" alt="ARII Controle de Produtividade" width="100%" />
 
-> Projeto de inovação desenvolvido para o contexto de Backoffice da Equatorial Piauí.
+# ARII · Controle de Produtividade
 
-## Sobre o projeto
+### Inteligência operacional para equipes de Backoffice
 
-O ARII centraliza atividades operacionais que antes poderiam ficar distribuídas em anotações e controles manuais. A solução permite que cada atendente registre seu trabalho, acompanhe indicadores individuais por dia e consulte seu histórico. A supervisão conta com uma visão consolidada do desempenho da equipe e relatórios exportáveis.
+Uma plataforma moderna para registrar atividades, acompanhar indicadores e transformar a rotina operacional em dados claros para atendentes e supervisores.
 
-## Problema
+[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-a3e635?style=for-the-badge)](https://github.com/fabiodevfulls/arii-controle-produtividade)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Cloudflare](https://img.shields.io/badge/Cloudflare-Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
+[![License](https://img.shields.io/badge/uso-projeto%20autoral-132238?style=for-the-badge)](#autor)
 
-Controles manuais e informações dispersas dificultam:
+[Ver demonstração](https://controle-backoffice-arii.fabio-boy-2010-fs.chatgpt.site) · [Conhecer recursos](#-principais-recursos) · [Executar localmente](#-executando-localmente)
 
-- o acompanhamento diário da produtividade;
-- a localização de protocolos e registros antigos;
-- a identificação de erros de lançamento;
-- a análise do desempenho individual e da equipe;
-- a rastreabilidade das atividades realizadas no Backoffice.
-
-## Solução proposta
-
-O ARII reúne autenticação, registro operacional, consulta e indicadores em uma única plataforma. Os dados ficam separados por usuário, enquanto a supervisão acessa uma visão consolidada da equipe.
-
-## Tecnologias e arquitetura
-
-O projeto utiliza uma base moderna, responsiva e preparada para evolução:
-
-| Camada | Tecnologia | Responsabilidade |
-| --- | --- | --- |
-| Interface | React + TypeScript | Construção da experiência visual com componentes tipados |
-| Aplicação | Next.js + Vite | Estrutura e ferramentas de desenvolvimento da aplicação |
-| Autenticação | Supabase Auth | Cadastro, login e controle de acesso dos usuários |
-| Hospedagem | Cloudflare Workers | Execução e disponibilização da aplicação na infraestrutura Cloudflare |
-| Dados | D1 / SQLite | Persistência dos registros e indicadores operacionais |
-
-### Ecossistema do projeto
-
-- React
-- Next.js
-- TypeScript
-- Supabase
-- Cloudflare
-- Vite
-- SQLite
-
-## Principais funcionalidades
-
-### Acesso e perfis
-
-- Cadastro público para atendentes.
-- Autenticação por e-mail e senha.
-- Área individual com registros e relatório do próprio usuário.
-- Perfil de supervisão sem cadastro público.
-- Separação dos dados conforme o perfil de acesso.
-
-### Registro de atividades
-
-- Registro de protocolos e ligações.
-- Classificação por tipologia e estado atendido.
-- Armazenamento de data, horário e quantidade.
-- Inclusão do link relacionado ao sistema de Backoffice.
-- Exclusão de lançamentos incorretos.
-- Busca por protocolo, tipologia, estado ou atendente.
-
-### Relatório individual
-
-- Indicadores separados por dia trabalhado.
-- Total de protocolos e ligações.
-- Tempo produtivo.
-- Percentual de produtividade.
-- Quantidade de atividades por tipologia.
-- Comparação com a meta diária individual.
-
-### Painel da supervisão
-
-- Visão diária consolidada da equipe.
-- Filtros por data e atendente.
-- Consulta de registros anteriores.
-- Indicadores de protocolos, ligações, total de atividades e produtividade.
-- Exportação de relatórios em Excel e PDF.
-
-## Fluxo de uso
-
-1. O atendente cria sua conta e entra na plataforma.
-2. Cada protocolo ou ligação é registrado em um formulário padronizado.
-3. Os lançamentos alimentam automaticamente o relatório individual do dia.
-4. A supervisão acompanha os resultados consolidados da equipe.
-5. Os relatórios podem ser filtrados e exportados para análise.
-
-## Informações registradas
-
-| Campo | Finalidade |
-| --- | --- |
-| Tipo de atividade | Identificar protocolo ou ligação |
-| Número do protocolo | Garantir identificação e rastreabilidade |
-| Tipologia | Classificar o atendimento realizado |
-| Estado tratado | Indicar a unidade federativa relacionada |
-| Data e horário | Registrar quando a atividade ocorreu |
-| Quantidade | Contabilizar a produção |
-| Link do Backoffice | Vincular o lançamento à operação original |
-
-## Benefícios esperados
-
-- Centralização das informações operacionais.
-- Redução de controles manuais e anotações dispersas.
-- Acompanhamento transparente da produtividade.
-- Correção rápida de registros lançados incorretamente.
-- Consulta simplificada do histórico.
-- Maior rastreabilidade das atividades.
-- Relatórios padronizados para tomada de decisão.
-
-## Status do projeto
-
-🧪 **Protótipo em desenvolvimento**
-
-O conceito funcional, as principais telas e a arquitetura tecnológica já foram definidos. O processo de instalação, as versões das dependências e o endereço público do protótipo deverão ser adicionados ao repositório quando a implementação for disponibilizada.
-
-## Próximos passos
-
-- Publicar o código-fonte no repositório.
-- Documentar as versões das tecnologias e a configuração da arquitetura.
-- Adicionar instruções de configuração e execução.
-- Incluir capturas das principais telas.
-- Disponibilizar um link direto para demonstração.
-- Definir regras de cálculo da produtividade e das metas.
-- Implementar testes e validações de segurança.
-
-## Autor
-
-**Fabio da Silva Araujo**  
-Equatorial Piauí - Backoffice
+</div>
 
 ---
 
-Se este projeto foi útil ou despertou seu interesse, deixe uma estrela no repositório.
+## ✨ Sobre o projeto
 
+O **ARII** centraliza o controle de protocolos, ligações e atividades do Backoffice em um único ambiente. Cada atendente acompanha a própria produção enquanto a supervisão visualiza indicadores consolidados, histórico e relatórios exportáveis.
+
+> Projeto de inovação desenvolvido para apoiar a operação de Backoffice da Equatorial Piauí.
+
+## 🎯 O problema que resolvemos
+
+Informações espalhadas em anotações e controles manuais dificultam a rastreabilidade, atrasam análises e aumentam o risco de lançamentos incorretos. O ARII cria um fluxo padronizado e transforma cada registro em informação útil para a gestão.
+
+| Antes | Com o ARII |
+| --- | --- |
+| Controles manuais e dispersos | Dados centralizados e estruturados |
+| Consulta demorada de protocolos | Pesquisa rápida e histórico rastreável |
+| Indicadores calculados manualmente | Produtividade atualizada automaticamente |
+| Pouca visibilidade da equipe | Painel consolidado para supervisão |
+
+## 🚀 Principais recursos
+
+- 🔐 **Autenticação e perfis** — acesso seguro para atendentes e supervisores.
+- 📝 **Registro operacional** — protocolos e ligações com tipologia, estado, data e quantidade.
+- 📊 **Dashboard inteligente** — indicadores diários de produção e produtividade.
+- 👥 **Gestão da equipe** — visão consolidada, filtros e acompanhamento por atendente.
+- 🔎 **Histórico pesquisável** — localização rápida de atividades e protocolos anteriores.
+- ✏️ **Correção de registros** — edição e exclusão controladas pelo proprietário do lançamento.
+- 📄 **Relatórios profissionais** — exportação para PDF, Excel e integração com Power BI.
+- 📱 **Interface responsiva** — experiência adaptada para diferentes tamanhos de tela.
+
+## 🧰 Tecnologias
+
+<div align="center">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" width="54" height="54" alt="React" title="React" />
+  &nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" width="54" height="54" alt="Next.js" title="Next.js" />
+  &nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" width="54" height="54" alt="TypeScript" title="TypeScript" />
+  &nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg" width="54" height="54" alt="Vite" title="Vite" />
+  &nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" width="54" height="54" alt="Supabase" title="Supabase" />
+  &nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cloudflare/cloudflare-original.svg" width="54" height="54" alt="Cloudflare" title="Cloudflare" />
+  &nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg" width="54" height="54" alt="SQLite" title="SQLite" />
+</div>
+
+<br />
+
+| Camada | Tecnologia | Responsabilidade |
+| --- | --- | --- |
+| Interface | React 19 + TypeScript | Componentes, experiência visual e tipagem |
+| Aplicação | Next.js + Vinext + Vite | Rotas, renderização e build otimizado |
+| Autenticação | Supabase Auth | Cadastro, login e sessões de usuário |
+| Persistência | Cloudflare D1 / SQLite | Atividades, contas e indicadores |
+| ORM | Drizzle ORM | Modelagem e acesso tipado aos dados |
+| Hospedagem | Cloudflare Workers | Execução distribuída e publicação |
+| Análise | Power BI | Consumo e visualização de dados operacionais |
+
+## 🏗️ Arquitetura
+
+```text
+Usuário
+  │
+  ▼
+React + Next.js
+  │
+  ├── Supabase Auth ── identidade e sessão
+  │
+  └── API da aplicação
+          │
+          ▼
+   Cloudflare Workers
+          │
+          ▼
+      D1 / SQLite ── registros e indicadores
+          │
+          └── Power BI ── análise operacional
+```
+
+## 🔄 Fluxo de uso
+
+1. O atendente cria sua conta e acessa a plataforma.
+2. Protocolos e ligações são registrados em um formulário padronizado.
+3. Os lançamentos atualizam automaticamente o relatório individual.
+4. A supervisão acompanha a produção consolidada da equipe.
+5. Os dados podem ser pesquisados, filtrados e exportados.
+
+## 💻 Executando localmente
+
+### Pré-requisitos
+
+- Node.js **22.13 ou superior**
+- pnpm
+- Conta no Supabase
+- Conta Cloudflare com Workers e D1 configurados
+
+### Instalação
+
+```bash
+git clone https://github.com/fabiodevfulls/arii-controle-produtividade.git
+cd arii-controle-produtividade
+pnpm install
+```
+
+Crie o arquivo `.dev.vars` a partir do exemplo:
+
+```bash
+cp .dev.vars.example .dev.vars
+```
+
+Preencha as variáveis localmente — nunca publique credenciais:
+
+```env
+SUPABASE_URL=https://SEU-PROJETO.supabase.co
+SUPABASE_PUBLISHABLE_KEY=SUA_CHAVE_PUBLICA_SUPABASE
+SUPERVISOR_EMAILS=supervisor@empresa.com
+```
+
+Inicie o ambiente de desenvolvimento:
+
+```bash
+pnpm dev
+```
+
+## 📁 Estrutura principal
+
+```text
+arii-controle-produtividade/
+├── app/                 # Interface, páginas e rotas de API
+├── db/                  # Conexão e esquema do banco
+├── drizzle/             # Migrações do banco de dados
+├── public/              # Imagens e recursos visuais
+├── power-bi/            # Consulta e documentação do Power BI
+├── scripts/             # Build e validação de artefatos
+├── tests/               # Testes automatizados
+├── worker/              # Worker Cloudflare
+└── wrangler.jsonc       # Configuração de deploy e D1
+```
+
+## 🔒 Segurança
+
+- Arquivos `.env` e `.dev.vars` são ignorados pelo Git.
+- Credenciais devem ser cadastradas apenas no ambiente local ou como secrets da Cloudflare.
+- Alterações em atividades são validadas no servidor conforme usuário e perfil.
+- O arquivo `.dev.vars.example` contém somente valores ilustrativos.
+
+## 🗺️ Evolução do produto
+
+- [x] Registro de protocolos e ligações
+- [x] Dashboard individual e da supervisão
+- [x] Autenticação e separação por perfil
+- [x] Histórico, filtros e exportações
+- [x] Integração para Power BI
+- [ ] Ampliar a cobertura de testes automatizados
+- [ ] Adicionar monitoramento e métricas operacionais
+- [ ] Documentar o processo completo de implantação
+
+## 👨‍💻 Autor
+
+**Fabio da Silva Araujo**  
+Projeto ARII · Equatorial Piauí · Backoffice
+
+<div align="center">
+
+### Gostou do projeto?
+
+Deixe uma ⭐ no repositório e acompanhe a evolução do ARII.
+
+</div>
