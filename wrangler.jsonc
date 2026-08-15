@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "backofficeproducao",
+  "pages_build_output_dir": "dist/client",
+  "compatibility_date": "2026-05-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "backoffice-producao-db",
+      "database_id": "6f8101b6-1e37-46be-950c-b7ac066a1172"
+    }
+  ]
+}
