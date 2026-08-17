@@ -36,6 +36,7 @@ export const activities = sqliteTable(
     userEmail: text("user_email").notNull(),
     kind: text("kind", { enum: ["protocol", "call"] }).notNull(),
     protocol: text("protocol"),
+    outcome: text("outcome", { enum: ["deferred", "analysis", "denied"] }),
     typologyId: integer("typology_id").notNull(),
     typologyName: text("typology_name").notNull(),
     quantity: integer("quantity").notNull().default(1),

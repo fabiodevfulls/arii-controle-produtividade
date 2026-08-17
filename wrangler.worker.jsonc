@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "controle-backoffice-arii",
+  "main": "dist/server/index.js",
+  "compatibility_date": "2026-07-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "no_bundle": true,
+  "assets": {
+    "directory": "dist/client",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "backoffice-producao-db",
+      "database_id": "6f8101b6-1e37-46be-950c-b7ac066a1172"
+    }
+  ]
+}

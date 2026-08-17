@@ -1,4 +1,4 @@
-import { apiError, ensureCurrentUser, getDatabase } from "../../lib/server";
+import { apiError, ensureCurrentUser, getDatabase, isAdminEmail } from "../../lib/server";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +8,7 @@ type ActivityRow = {
   userName: string;
   kind: "protocol" | "call";
   protocol: string | null;
+  outcome: "deferred" | "analysis" | "denied" | null;
   typologyId: number;
   typologyName: string;
   quantity: number;
@@ -28,14 +29,14 @@ export async function GET(request: Request) {
 
     const activitySql = currentUser.role === "supervisor"
       ? `SELECT a.id, a.user_email AS userEmail, COALESCE(u.name, a.user_email) AS userName,
-          a.kind, a.protocol, a.typology_id AS typologyId, a.typology_name AS typologyName,
+          a.kind, a.protocol, a.outcome, a.typology_id AS typologyId, a.typology_name AS typologyName,
           a.quantity, a.duration_seconds AS durationSeconds, a.occurred_at AS occurredAt,
           a.distribution_state AS distributionState,
           a.backoffice_url AS backofficeUrl
          FROM activities a LEFT JOIN users u ON u.email = a.user_email
-         ORDER BY a.occurred_at DESC, a.id DESC LIMIT 500`
+         ORDER BY a.occurred_at DESC, a.id DESC LIMIT 5000`
       : `SELECT a.id, a.user_email AS userEmail, COALESCE(u.name, a.user_email) AS userName,
-          a.kind, a.protocol, a.typology_id AS typologyId, a.typology_name AS typologyName,
+          a.kind, a.protocol, a.outcome, a.typology_id AS typologyId, a.typology_name AS typologyName,
           a.quantity, a.duration_seconds AS durationSeconds, a.occurred_at AS occurredAt,
           a.distribution_state AS distributionState,
           a.backoffice_url AS backofficeUrl
@@ -66,7 +67,7 @@ export async function GET(request: Request) {
       : { results: [] };
 
     return Response.json({
-      currentUser: { ...currentUser, isAdmin: currentUser.email === "fabiodasilvaa82@gmail.com" },
+      currentUser: { ...currentUser, isAdmin: isAdminEmail(currentUser.email) },
       typologies: typologyResult.results ?? [],
       activities: activityResult.results ?? [],
       team: teamResult.results ?? [],

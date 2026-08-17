@@ -13,11 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Controle de Produtividade • Backoffice",
+  title: "Backoffice Produção • Controle de Produtividade",
   description: "Controle de protocolos, ligações e produtividade da equipe de Backoffice.",
-  other: {
-    "codex-preview": "development",
-  },
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

@@ -1,11 +1,13 @@
 import { hashPassword } from "../../../lib/auth";
-import { apiError, ensureSchema, getDatabase, getRegistrationTestEmail } from "../../../lib/server";
+import { apiError, ensureSchema, getDatabase, getRegistrationTestEmail, sendGmailMessage } from "../../../lib/server";
 
 export const dynamic = "force-dynamic";
 const ADMIN_EMAIL = "fabiodasilvaa82@gmail.com";
 const MAX_ATTENDANTS = 25;
 const CORPORATE_DOMAIN = "@equatorialservicos.com.br";
 const MAX_CODE_ATTEMPTS = 5;
+const CODE_EXPIRATION_MINUTES = 10;
+const RESEND_WAIT_SECONDS = 60;
 
 async function digest(value: string) {
   const bytes = new TextEncoder().encode(value);
@@ -73,13 +75,32 @@ export async function POST(request: Request) {
     const exists = await db.prepare("SELECT 1 AS found FROM users WHERE email = ?").bind(email).first<{ found: number }>();
     if (exists?.found) return Response.json({ error: "Já existe um cadastro com esse e-mail." }, { status: 409 });
 
+    const previous = await db.prepare("SELECT last_sent_at AS lastSentAt FROM registration_verifications WHERE email = ?")
+      .bind(email).first<{ lastSentAt: string }>();
+    if (previous?.lastSentAt && Date.now() - Date.parse(previous.lastSentAt) < RESEND_WAIT_SECONDS * 1000) {
+      return Response.json({ error: "Aguarde 1 minuto antes de solicitar outro código." }, { status: 429 });
+    }
     const credentials = await hashPassword(password);
-    await db.prepare(`INSERT INTO users
-      (email, name, employee_code, role, registration_complete, password_hash, password_salt, active, created_at)
-      VALUES (?, ?, ?, 'attendant', 1, ?, ?, 1, ?)`)
-      .bind(email, name, employeeCode, credentials.hash, credentials.salt, new Date().toISOString())
-      .run();
-    return Response.json({ message: "Cadastro criado. Agora você pode entrar." }, { status: 201 });
+    const code = crypto.getRandomValues(new Uint32Array(1))[0].toString().padStart(10, "0").slice(-6);
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + CODE_EXPIRATION_MINUTES * 60_000).toISOString();
+    await db.prepare(`INSERT INTO registration_verifications
+      (email, name, employee_code, password_hash, password_salt, code_hash, expires_at, attempts, last_sent_at, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?)
+      ON CONFLICT(email) DO UPDATE SET name = excluded.name, employee_code = excluded.employee_code,
+        password_hash = excluded.password_hash, password_salt = excluded.password_salt,
+        code_hash = excluded.code_hash, expires_at = excluded.expires_at, attempts = 0,
+        last_sent_at = excluded.last_sent_at, created_at = excluded.created_at`)
+      .bind(email, name, employeeCode, credentials.hash, credentials.salt,
+        await digest(`${email}:${code}`), expiresAt, now.toISOString(), now.toISOString()).run();
+    try {
+      await sendGmailMessage(email, "Código de validação — Backoffice Produção",
+        `Seu código de validação é: ${code}\n\nEle expira em ${CODE_EXPIRATION_MINUTES} minutos.\nSe você não solicitou este código, ignore esta mensagem.`);
+    } catch (error) {
+      await db.prepare("DELETE FROM registration_verifications WHERE email = ?").bind(email).run();
+      throw error;
+    }
+    return Response.json({ message: "Código enviado. Consulte seu e-mail para concluir o cadastro." });
   } catch (error) {
     return apiError(error);
   }

@@ -144,6 +144,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .result-status.below { background: rgba(251, 113, 133, .1); color: var(--red); }
 
 .filters { display: grid; grid-template-columns: 1fr 220px; gap: 12px; margin-bottom: 18px; }
+.record-period-filters { display: grid; grid-template-columns: minmax(260px, .9fr) minmax(260px, 1.2fr) minmax(230px, .9fr); gap: 12px; margin: -6px 0 18px; padding: 14px; border: 1px solid var(--border); border-radius: 10px; background: #0b1828; }
+.record-period-filters label { display: grid; gap: 6px; color: #b8c5d6; font-size: 11px; font-weight: 800; }
+.record-period-filters select, .record-period-filters input { width: 100%; height: 42px; border: 1px solid #40536a; border-radius: 8px; padding: 0 11px; background: #071526; color: #fff; }
+.record-period-filters .record-calendar input { color-scheme: dark; border-color: var(--green); font-size: 15px; font-weight: 800; }
+.record-period-filters .record-calendar small { color: var(--muted); font-size: 10px; font-weight: 500; }
 .table-scroll { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
 th { padding: 12px 14px; background: #0a1626; color: var(--muted); text-align: left; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
@@ -155,6 +160,11 @@ td a { color: var(--blue); font-weight: 700; text-decoration: none; }
 .table-kind, .score-pill { display: inline-block; border-radius: 999px; padding: 5px 8px; font-size: 10px; font-weight: 800; }
 .table-kind.protocol { background: rgba(56, 189, 248, .1); color: var(--blue); }
 .table-kind.call { background: rgba(163, 230, 53, .1); color: var(--green); }
+.outcome-badge { display: inline-block; border-radius: 999px; padding: 5px 8px; font-size: 10px; font-weight: 800; white-space: nowrap; }
+.outcome-badge.deferred { background: rgba(34, 197, 94, .13); color: #86efac; }
+.outcome-badge.analysis { background: rgba(245, 183, 5, .14); color: #facc15; }
+.outcome-badge.denied { background: rgba(239, 68, 68, .14); color: #fca5a5; }
+.outcome-badge.unknown { background: rgba(148, 163, 184, .12); color: #cbd5e1; }
 .score-pill.good { background: rgba(163, 230, 53, .1); color: var(--green); }
 .score-pill.low { background: rgba(251, 113, 133, .1); color: var(--red); }
 .record-actions { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
@@ -181,21 +191,59 @@ td a { color: var(--blue); font-weight: 700; text-decoration: none; }
 .state-contact-card { display: grid; gap: 5px; border: 1px solid rgba(56, 189, 248, .25); border-radius: 10px; padding: 14px 16px; background: rgba(56, 189, 248, .07); color: var(--blue); font-size: 13px; }
 .state-contact-card strong { color: white; margin-bottom: 3px; }
 .script-preview-panel { position: sticky; top: 110px; }
+.script-sap-heading { margin: 26px 0 12px; color: var(--green); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
 .script-preview-panel pre { min-height: 420px; max-height: 58vh; overflow: auto; margin: 0 0 18px; border: 1px solid var(--border); border-radius: 10px; padding: 20px; background: #081320; color: #dce8f5; font: 13px/1.65 "Segoe UI", sans-serif; white-space: pre-wrap; overflow-wrap: anywhere; }
 .copy-script-button { width: 100%; }
 .attendants-layout { display: grid; grid-template-columns: minmax(360px, .75fr) minmax(0, 1.25fr); gap: 20px; align-items: start; }
 .attendants-form, .attendants-list-panel { padding: 24px; }
+.admin-search { width: 100%; height: 44px; margin-bottom: 14px; border: 1px solid #40536a; border-radius: 8px; padding: 0 12px; background: #071526; color: #fff; }
+.attendant-card.inactive { opacity: .72; border-color: #754252; }
+.inactive-badge { color: #ff9bac; background: rgba(220, 38, 72, .12); border: 1px solid rgba(255, 99, 125, .35); border-radius: 999px; padding: 5px 9px; font-size: 10px; font-weight: 900; }
+.admin-production-form { padding: 24px; }
 .attendant-list { display: grid; gap: 10px; }
 .attendant-card { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 13px; border: 1px solid var(--border); border-radius: 11px; padding: 13px; background: #0b1828; }
 .attendant-card > div { min-width: 0; display: grid; gap: 3px; }
 .attendant-card strong, .attendant-card span, .attendant-card small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .attendant-card span, .attendant-card small { color: var(--muted); font-size: 11px; }
+.attendant-access-actions { display: grid; justify-items: end; gap: 8px; }
+.delete-attendant-button { border: 1px solid rgba(251, 113, 133, .4); border-radius: 7px; padding: 7px 10px; background: rgba(251, 113, 133, .08); color: var(--red); font-size: 10px; font-weight: 900; cursor: pointer; }
+.delete-attendant-button:hover { background: rgba(251, 113, 133, .16); }
+.delete-attendant-button:disabled { opacity: .55; cursor: wait; }
 .report-toolbar { display: grid; justify-items: end; gap: 10px; }
 .export-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .export-button { border: 1px solid var(--border); border-radius: 9px; padding: 10px 14px; color: #fff; font-weight: 800; cursor: pointer; transition: .18s ease; }
 .export-button.pdf { background: #b42334; border-color: #d13b4e; }
 .export-button.excel { background: #117a4b; border-color: #20a667; }
 .export-button:hover { filter: brightness(1.12); transform: translateY(-1px); }
+.report-filters { display: flex; flex-wrap: wrap; gap: 14px; padding: 18px; align-items: end; }
+.report-filters label { display: grid; gap: 7px; min-width: 210px; flex: 1; color: #dbe4ef; font-size: 12px; font-weight: 800; }
+.report-filters select, .report-filters input { width: 100%; height: 44px; border: 1px solid #40536a; border-radius: 8px; padding: 0 12px; background: #0b1828; color: #fff; }
+.report-filters .report-date-range input { color-scheme: dark; border-color: var(--green); font-size: 15px; font-weight: 800; cursor: pointer; }
+.report-filters .report-date-range small { color: var(--muted); font-size: 10px; font-weight: 500; }
+.report-period-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.report-period-grid.single-period { grid-template-columns: minmax(0, 1fr); }
+.report-custom-download { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 20px; }
+.report-custom-download h2, .report-custom-download p { margin: 4px 0 0; }
+.report-awaiting-selection { padding: 24px; }
+.overview-scope-filter { display: flex; align-items: end; justify-content: space-between; gap: 20px; padding: 18px 20px; }
+.overview-scope-filter h2, .overview-scope-filter p { margin: 4px 0 0; }
+.overview-scope-filter label { display: grid; gap: 7px; min-width: 290px; color: #c5d1df; font-size: 11px; font-weight: 800; }
+.overview-scope-filter select { height: 44px; border: 1px solid var(--green); border-radius: 8px; padding: 0 12px; background: #071526; color: #fff; font-weight: 800; }
+.report-period-card { padding: 16px; transition: .18s ease; }
+.report-period-card.active { border-color: var(--green); box-shadow: 0 0 0 1px rgba(163, 230, 53, .2); }
+.period-select { width: 100%; display: grid; grid-template-columns: 1fr auto; gap: 5px 12px; border: 0; padding: 0 0 14px; background: transparent; color: #fff; text-align: left; cursor: pointer; }
+.period-select span { color: var(--green); font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
+.period-select strong { grid-row: span 2; font-size: 30px; }
+.period-select small { color: var(--muted); }
+.period-kind-counts { grid-row: span 2; display: grid; gap: 4px; text-align: right; }
+.period-kind-counts strong { grid-row: auto; font-size: 14px; }
+.period-download-hint { margin: 0; padding-top: 12px; border-top: 1px solid var(--border); color: var(--muted); font-size: 11px; text-align: center; }
+.report-two-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.report-one-metric { grid-template-columns: minmax(280px, 520px); }
+.report-period-card .export-actions { display: grid; grid-template-columns: 1fr 1fr; }
+.report-period-card .export-button { padding: 9px 8px; font-size: 11px; }
+.report-range-note { display: flex; justify-content: space-between; gap: 12px; color: #dbe4ef; }
+.report-range-note span { color: var(--muted); }
 .active-badge { border-radius: 999px; padding: 5px 9px; background: rgba(163, 230, 53, .1); color: var(--green) !important; font-weight: 800; }
 .report-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .chart-panel { min-height: 360px; }
@@ -264,11 +312,14 @@ td a { color: var(--blue); font-weight: 700; text-decoration: none; }
   .scripts-layout { grid-template-columns: 1fr; }
   .script-preview-panel { position: static; }
   .attendants-layout { grid-template-columns: 1fr; }
+  .record-period-filters { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
   .report-toolbar { justify-items: stretch; width: 100%; }
   .report-toolbar select, .export-actions, .export-button { width: 100%; }
+  .report-period-grid { grid-template-columns: 1fr; }
+  .report-range-note { display: grid; }
   .metric-grid, .report-metrics { grid-template-columns: 1fr; }
   .metric-card { min-height: 105px; }
   .metric-icon { width: 50px; height: 50px; }

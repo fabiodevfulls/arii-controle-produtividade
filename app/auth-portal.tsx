@@ -130,7 +130,7 @@ function AuthForm({ mode, setMode, onLogin, onSignup, onForgot }: {
   return (
     <main className="login-shell">
       <section className="login-panel auth-panel" aria-labelledby="auth-title">
-        <div className="login-mark">ARII</div>
+        <div className="login-mark">BP</div>
         <p className="eyebrow">CONTROLE DE PRODUTIVIDADE</p>
         <h1 id="auth-title">{mode === "signup" ? "Crie sua conta de atendente" : mode === "forgot" ? "Recupere sua senha" : "Entre na plataforma"}</h1>
         <p>{mode === "signup" ? "Cadastre-se com seus dados profissionais. Você verá somente seus próprios resultados." : mode === "forgot" ? "Informe seu e-mail para receber o link de recuperação." : "Use o e-mail e a senha cadastrados no sistema."}</p>
@@ -158,7 +158,7 @@ function AuthForm({ mode, setMode, onLogin, onSignup, onForgot }: {
 function NewPasswordForm({ onSave }: { onSave: (password: string) => Promise<void> }) {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  return <main className="login-shell"><section className="login-panel auth-panel"><div className="login-mark">ARII</div><h1>Crie uma nova senha</h1><form className="auth-form" onSubmit={async (event) => { event.preventDefault(); try { await onSave(password); } catch (error) { setMessage(translateAuthError(error)); } }}><label className="field"><span>Nova senha</span><input type="password" minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} required /></label><button className="primary-button" type="submit">Salvar nova senha</button>{message ? <p className="form-status error">{message}</p> : null}</form></section></main>;
+  return <main className="login-shell"><section className="login-panel auth-panel"><div className="login-mark">BP</div><h1>Crie uma nova senha</h1><form className="auth-form" onSubmit={async (event) => { event.preventDefault(); try { await onSave(password); } catch (error) { setMessage(translateAuthError(error)); } }}><label className="field"><span>Nova senha</span><input type="password" minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} required /></label><button className="primary-button" type="submit">Salvar nova senha</button>{message ? <p className="form-status error">{message}</p> : null}</form></section></main>;
 }
 
 function translateAuthError(error: unknown) {

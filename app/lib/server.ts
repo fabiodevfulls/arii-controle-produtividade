@@ -33,6 +33,11 @@ type RuntimeEnv = {
   RESEND_API_KEY?: string;
   EMAIL_FROM?: string;
   REGISTRATION_TEST_EMAIL?: string;
+  GMAIL_CLIENT_ID?: string;
+  GMAIL_CLIENT_SECRET?: string;
+  GMAIL_REFRESH_TOKEN?: string;
+  GMAIL_SENDER_EMAIL?: string;
+  POWER_BI_API_KEY?: string;
 };
 
 async function getRuntimeEnv(): Promise<RuntimeEnv> {
@@ -67,6 +72,59 @@ export async function getRegistrationTestEmail() {
   return (env.REGISTRATION_TEST_EMAIL ?? process.env.REGISTRATION_TEST_EMAIL ?? "").trim().toLowerCase();
 }
 
+export async function getGmailConfig() {
+  const env = await getRuntimeEnv();
+  const clientId = env.GMAIL_CLIENT_ID ?? process.env.GMAIL_CLIENT_ID;
+  const clientSecret = env.GMAIL_CLIENT_SECRET ?? process.env.GMAIL_CLIENT_SECRET;
+  const refreshToken = env.GMAIL_REFRESH_TOKEN ?? process.env.GMAIL_REFRESH_TOKEN;
+  const senderEmail = env.GMAIL_SENDER_EMAIL ?? process.env.GMAIL_SENDER_EMAIL;
+  if (!clientId || !clientSecret || !refreshToken || !senderEmail) {
+    throw new Error("Envio de e-mail ainda não configurado.");
+  }
+  return { clientId, clientSecret, refreshToken, senderEmail };
+}
+
+export async function getPowerBiApiKey() {
+  const env = await getRuntimeEnv();
+  const apiKey = env.POWER_BI_API_KEY ?? process.env.POWER_BI_API_KEY;
+  if (!apiKey) throw new Error("Integração com o Power BI ainda não configurada.");
+  return apiKey;
+}
+
+function base64(value: string) {
+  const bytes = new TextEncoder().encode(value);
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary);
+}
+
+function base64Url(value: string) {
+  return base64(value).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+export async function sendGmailMessage(to: string, subject: string, body: string) {
+  const config = await getGmailConfig();
+  const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ client_id: config.clientId, client_secret: config.clientSecret,
+      refresh_token: config.refreshToken, grant_type: "refresh_token" }),
+  });
+  if (!tokenResponse.ok) throw new Error("Não foi possível autorizar o envio pelo Gmail.");
+  const token = await tokenResponse.json() as { access_token?: string };
+  if (!token.access_token) throw new Error("O Gmail não forneceu autorização para envio.");
+  const encodedSubject = `=?UTF-8?B?${base64(subject)}?=`;
+  const message = [`From: Backoffice Producao <${config.senderEmail}>`, `To: ${to}`,
+    `Subject: ${encodedSubject}`, "MIME-Version: 1.0", "Content-Type: text/plain; charset=UTF-8",
+    "Content-Transfer-Encoding: 8bit", "", body].join("\r\n");
+  const response = await fetch("https://gmail.googleapis.com/gmail/v1/users/me/messages/send", {
+    method: "POST",
+    headers: { authorization: `Bearer ${token.access_token}`, "content-type": "application/json" },
+    body: JSON.stringify({ raw: base64Url(message) }),
+  });
+  if (!response.ok) throw new Error("Não foi possível enviar o código pelo Gmail.");
+}
+
 export async function ensureSchema() {
   const db = await getDatabase();
   await db.batch([
@@ -93,6 +151,7 @@ export async function ensureSchema() {
       user_email TEXT NOT NULL,
       kind TEXT NOT NULL,
       protocol TEXT,
+      outcome TEXT,
       typology_id INTEGER NOT NULL,
       typology_name TEXT NOT NULL,
       quantity INTEGER NOT NULL DEFAULT 1,
@@ -144,6 +203,9 @@ export async function ensureSchema() {
   if (!activityColumnNames.has("distribution_state")) {
     await db.prepare("ALTER TABLE activities ADD COLUMN distribution_state TEXT").run();
   }
+  if (!activityColumnNames.has("outcome")) {
+    await db.prepare("ALTER TABLE activities ADD COLUMN outcome TEXT").run();
+  }
 
   const count = await db.prepare("SELECT COUNT(*) AS total FROM typologies").first<{ total: number }>();
   if (!count?.total) {
@@ -157,8 +219,18 @@ export async function ensureSchema() {
 
 const BUILT_IN_SUPERVISOR_EMAILS = [
   "fabiodasilvaa82@gmail.com",
+  "produtividade.backoffice@gmail.com",
   "ariely.carvalho@equatorialservicos.com.br",
 ];
+
+const BUILT_IN_ADMIN_EMAILS = [
+  "fabiodasilvaa82@gmail.com",
+  "produtividade.backoffice@gmail.com",
+];
+
+export function isAdminEmail(email: string) {
+  return BUILT_IN_ADMIN_EMAILS.includes(email.trim().toLowerCase());
+}
 
 async function configuredSupervisors() {
   const configured = ((await getRuntimeEnv()).SUPERVISOR_EMAILS ?? "")
